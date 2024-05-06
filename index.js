@@ -74,8 +74,10 @@ const playGame = () => {
     if (rounds <= 5) {
         if (userScore > computerScore) {
             resultsOutcome.innerText = `Game concluded - User Wins!`
-        } else {
+        } else if (userScore < computerScore) {
             resultsOutcome.innerText = `Game concluded - Computer Wins!`
+        } else {
+            resultsOutcome.innerText = `Game concluded - Draw!`
         }
     }
 }
