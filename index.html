@@ -11,24 +11,37 @@
         <div id="title-container">
             Rock, Paper, Scissors
         </div>
-        <div id="results">
-            <div id="user-choice">
-                Your choice:
-                <p id="user-option"></p>
+        <div id="buttons-container" >
+            <button type="button" id="play-button">Start Game</button>
+        </div>
+        <div id="result-div" class="hidden">
+            <div id="rps-buttons">
+                <button type="button" id="rock-btn" class="rps-btns">Rock</button>
+                <button type="button" id="paper-btn" class="rps-btns">Paper</button>
+                <button type="button" id="scissors-btn" class="rps-btns">Scissors</button>
             </div>
-            <div id="random-choice">
-                Computer choice:
-                <p id="computer-option"></p>
+            <div id="rps-ui">
+                <div id="user-div">
+                    User Choice
+                    <p id="user-choice">
+                        
+                    </p>
+                </div>
+                <div id="computer-div">
+                    Computer Choice
+                    <p id="computer-choice">
+                        
+                    </p>
+                </div>
             </div>
             <div id="results-outcomes">
-                <p id="results-outcome">
-
-                </p>
             </div>
             <div id="score">
                 <p id="user-score">
                 </p>
                 <p id="computer-score">
+                </p>
+                <p id="current-rounds">
                 </p>
             </div>
         </div>

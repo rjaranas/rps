@@ -1,86 +1,97 @@
 document.addEventListener(`DOMContentLoaded`, () => {
-const userChoice = document.getElementById('user-choice');
-const resultsOutcome = document.getElementById('results-outcome');
-let userScores = document.getElementById('user-score')
-let compScores = document.getElementById('computer-score')
-let userOption = document.getElementById('user-option');
-let computerOption = document.getElementById('computer-option');
-let computerScore = 0;
-let userScore = 0;
-let rounds = 0;
+    const buttonContainer = document.getElementById('buttons-container')
+    const startGame = document.getElementById('play-button')
+    const resultDiv = document.getElementById('result-div')
+    const userChoice = document.getElementById('user-choice');
+    const computerChoice = document.getElementById('computer-choice')
+    const resultsOutcome = document.getElementById('results-outcomes');
+    const rpsButtons = document.querySelectorAll('.rps-btns')
+    let userScores = document.getElementById('user-score')
+    let compScores = document.getElementById('computer-score')
+    let roundCount = document.getElementById('current-rounds')
+    let computerScore = 0;
+    let userScore = 0;
+    let rounds = 0;
 
-const getComputerChoice = () => {
-    let randomNumber = Math.floor(Math.random() * 3) + 1;
-    switch(randomNumber) {
-        case 2:
-            computerOption.innerText = "Paper";
-            break;
-        case 3:
-            computerOption.innerText = "Scissors";
-            break;
-        default:
-            computerOption.innerText = "Rock";
-            break;
-            
-    }
-}
-
-const getHumanChoice = () => {
-    const event = window.prompt('Rock, Paper, Scissors?')
-    switch(event.toLowerCase()) {
-        case "rock":
-            userOption.innerText = "Rock";
-            break;
-        case "paper":
-            userOption.innerText = "Paper";
-            break;
-        case "scissors":
-            userOption.innerText = "Scissors";
-            break;
-        default:
-            alert("Not an option");
-            break;
-    }
-}
-
-const playRound = (human, computer) => {
-    if (computerOption.innerText === userOption.innerText) {
-        resultsOutcome.innerText = "It's a draw!"
-    }
-    if ((computerOption.innerText === "Rock" && userOption.innerText === "Scissors") || (computerOption.innerText === "Paper" && userOption.innerText === "Rock") || (computerOption.innerText === "Scissors" && userOption.innerText === "Paper")) {
-        computerScore = computerScore + 1;
-        resultsOutcome.innerText = `You lose! ${computerOption.innerText} beats ${userOption.innerText}`
-    }
-    if ((userOption.innerText === "Rock" && computerOption.innerText === "Scissors") || (userOption.innerText === "Paper" && computerOption.innerText === "Rock") || (userOption.innerText === "Scissors" && computerOption.innerText === "Paper")) {
-        userScore = userScore + 1;
-        resultsOutcome.innerText = `You Win! ${userOption.innerText} beats ${computerOption.innerText}`
-    }
-
-}
-
-
-
-
-const playGame = () => {
-    
-    while (rounds < 5) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-        rounds++;
-    }
-    userScores.innerText = `User Score: ${userScore}`
-    compScores.innerText = `Computer Score: ${computerScore}`
-    if (rounds <= 5) {
-        if (userScore > computerScore) {
-            resultsOutcome.innerText = `Game concluded - User Wins!`
-        } else if (userScore < computerScore) {
-            resultsOutcome.innerText = `Game concluded - Computer Wins!`
-        } else {
-            resultsOutcome.innerText = `Game concluded - Draw!`
+    const getComputerChoice = () => {
+        let randomNumber = Math.floor(Math.random() * 3) + 1;
+        switch(randomNumber) {
+            case 2:
+                computerChoice.innerText = "Paper";
+                break;
+            case 3:
+                computerChoice.innerText = "Scissors";
+                break;
+            default:
+                computerChoice.innerText = "Rock";
+                break;
+                
         }
     }
-}
 
-playGame();
+    
+
+
+
+
+    const playGame = () => {
+
+        rpsButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                userChoice.innerText = button.innerText
+                getComputerChoice();
+                if (computerChoice.innerText === userChoice.innerText) {
+                    rounds++;
+                    resultsOutcome.innerText = "It's a draw!"
+                }
+                if ((computerChoice.innerText === "Rock" && userChoice.innerText === "Scissors") || (computerChoice.innerText === "Paper" && userChoice.innerText === "Rock") || (computerChoice.innerText === "Scissors" && userChoice.innerText === "Paper")) {
+                    rounds++;
+                    computerScore++
+                    resultsOutcome.innerText = `You lose! ${computerChoice.innerText} beats ${userChoice.innerText}`
+                }
+                if ((userChoice.innerText === "Rock" && computerChoice.innerText === "Scissors") || (userChoice.innerText === "Paper" && computerChoice.innerText === "Rock") || (userChoice.innerText === "Scissors" && computerChoice.innerText === "Paper")) {
+                    rounds++
+                    userScore++;
+                    resultsOutcome.innerText = `You Win! ${userChoice.innerText} beats ${computerChoice.innerText}`
+                }
+                roundCount.innerText = `Rounds Played: \n${rounds}`
+                userScores.innerText = `User Score: \n${userScore}`
+                compScores.innerText = `Computer Score: \n${computerScore}`
+                if (userScore === 5 || computerScore === 5) {
+                    if (userScore === 5) {
+                        resultDiv.classList.add('hidden');
+                        startGame.classList.remove('hidden')
+                        let outcome = document.createElement('p');
+                        outcome.textContent = `You Win! \nPlay again?`
+                        outcome.classList.add('outcome')
+                        buttonContainer.insertBefore(outcome, startGame)
+                        startGame.textContent = `Play again`
+                    } else {
+                        resultDiv.classList.add('hidden');
+                        startGame.classList.remove('hidden')
+                        let outcome = document.createElement('p');
+                        outcome.classList.add('outcome')
+                        outcome.textContent = `You lose! \nPlay again?`
+                        buttonContainer.insertBefore(outcome, startGame)
+                        startGame.textContent = `Play again`
+                    } 
+                }
+            })
+        })
+    }
+    playGame();
+    startGame.addEventListener('click', () => {
+        computerScore = 0;
+        userScore = 0;
+        rounds = 0;
+        let outcome = document.querySelector('.outcome')
+            if (outcome) {
+                outcome.remove();
+            }
+        
+        resultDiv.classList.remove('hidden');
+        startGame.classList.add('hidden');
+        
+    })
+
 })
